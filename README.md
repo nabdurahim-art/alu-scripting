@@ -10,4 +10,4 @@ This project contains Ruby scripts using regular expressions with the Oniguruma 
 
 ```bash
 ./0-simply_match_holberton.rb "Best School"
- 
+
