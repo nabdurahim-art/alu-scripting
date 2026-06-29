@@ -8,25 +8,27 @@ def top_ten(subreddit):
 
     Args:
         subreddit (str): The name of the subreddit to query.
-
-    Returns:
-        None: Prints None if subreddit is invalid.
     """
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
     headers = {
-        "User-Agent": "linux:reddit.api.project:v1.0.0 (by /u/reddit_api_user)"
+        "User-Agent": "Mozilla/5.0 (Linux; ALU Project) python3-requests"
     }
     params = {"limit": 10}
-    response = requests.get(
-        url,
-        headers=headers,
-        params=params,
-        allow_redirects=False
-    )
-    if response.status_code != 200:
+    try:
+        response = requests.get(
+            url,
+            headers=headers,
+            params=params,
+            allow_redirects=False
+        )
+    except requests.exceptions.RequestException:
         print(None)
         return
-    data = response.json()
-    posts = data.get("data", {}).get("children", [])
-    for post in posts:
-        print(post.get("data", {}).get("title"))
+
+    if response.status_code == 200:
+        data = response.json()
+        posts = data.get("data", {}).get("children", [])
+        for post in posts:
+            print(post.get("data", {}).get("title"))
+    else:
+        print(None)
