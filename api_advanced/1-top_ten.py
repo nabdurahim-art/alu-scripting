@@ -10,10 +10,8 @@ def top_ten(subreddit):
         subreddit (str): The name of the subreddit to query.
     """
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
-    headers = {
-        "User-Agent": "linux:myredditapp:v1.2.3 (by /u/ALU_student)"
-    }
-    params = {"limit": 10}
+    headers = {"User-Agent": "alu-api-advanced-project"}
+    params = {"limit": 10, "raw_json": 1}
     response = requests.get(
         url,
         headers=headers,
@@ -23,10 +21,9 @@ def top_ten(subreddit):
     if response.status_code != 200:
         print(None)
         return
-    results = response.json()
-    posts = results.get("data", {}).get("children", [])
-    if not posts:
+    results = response.json().get("data", {}).get("children", [])
+    if not results:
         print(None)
         return
-    for post in posts:
+    for post in results:
         print(post.get("data", {}).get("title"))
